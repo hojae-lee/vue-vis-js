@@ -50,14 +50,14 @@ export default {
   },
   methods: {
     startDrag(event, startNum) {
-      console.log('startDrag', event);
+      console.log('startDrag', event)
       event.dataTransfer.dropEffect = "move"
       event.dataTransfer.effectAllowed = "move"
       event.dataTransfer.setData("selectedItem", startNum)
     },
     onDrop(event, endNum) {
       const selectedItem = Number(event.dataTransfer.getData("selectedItem"))
-      console.log('onDrop', event);
+      console.log('onDrop', event)
       console.log(this.rows[endNum], this.rows[selectedItem])
     }
   }
