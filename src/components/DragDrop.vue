@@ -44,21 +44,32 @@ export default {
   },
   data() {
     return {
-      rows: [{'col1' : 1, 'col2': 2, 'col3': 3, 'col4': 4, 'col5': 5, 'col6': 6, 'col7': 8, 'col8': 9, 'col9': 10}, {'col1' : 1, 'col2': 2, 'col3': 3, 'col4': 4, 'col5': 5, 'col6': 6, 'col7': 8, 'col8': 9, 'col9': 10}, {'col1' : 1, 'col2': 2, 'col3': 3, 'col4': 4, 'col5': 5, 'col6': 6, 'col7': 8, 'col8': 9, 'col9': 10}],
+      rows: [{'col1' : 'A', 'col2': 2, 'col3': 3, 'col4': 4, 'col5': 5, 'col6': 6, 'col7': 8, 'col8': 9, 'col9': 10}, {'col1' : 'B', 'col2': 2, 'col3': 3, 'col4': 4, 'col5': 5, 'col6': 6, 'col7': 8, 'col8': 9, 'col9': 10}, {'col1' : 'C', 'col2': 2, 'col3': 3, 'col4': 4, 'col5': 5, 'col6': 6, 'col7': 8, 'col8': 9, 'col9': 10}],
       cols: ['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9']
     }
   },
   methods: {
+    onMoveRow (rowIndex, moveValue) {
+			if (this.rows.length < 0) return;
+
+			const newPosi = rowIndex + moveValue;
+
+			if (newPosi < 0 || newPosi >= this.rows.length) return;
+
+			const tempList = JSON.parse(JSON.stringify(this.rows));
+			const target = tempList.splice(rowIndex, 1)[0];
+			tempList.splice(newPosi, 0, target);
+
+			this.rows = tempList;
+		},
     startDrag(event, startNum) {
-      console.log('startDrag', event)
       event.dataTransfer.dropEffect = "move"
       event.dataTransfer.effectAllowed = "move"
       event.dataTransfer.setData("selectedItem", startNum)
     },
     onDrop(event, endNum) {
       const selectedItem = Number(event.dataTransfer.getData("selectedItem"))
-      console.log('onDrop', event)
-      console.log(this.rows[endNum], this.rows[selectedItem])
+      this.onMoveRow(selectedItem, endNum - selectedItem)
     }
   }
 }
